@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Portal</title>
+    <link rel="icon" href="https://storage.googleapis.com/my-react-image-bucket-123/DS_Logos/Logo_Favicon/DSFileshare_Favicon.png" type="image/x-icon">
+</head>
+<body>
+    <h2>Welcome, {{ session['username'] }}!</h2>
+
+    <h3>Upload a File</h3>
+    <form method="POST" enctype="multipart/form-data">
+        <label>Select Folder:</label><br>
+        <select name="folder" required>
+            {% for folder in folders %}
+            <option value="{{ folder }}" {% if folder == selected_folder %}selected{% endif %}>{{ folder }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Select File to Upload:</label><br>
+        <input type="file" name="file"><br><br>
+        
+        <button type="submit" name="action" value="upload">Upload</button>
+        <button type="submit" name="action" value="browse">Browse Folder</button>
+    </form>
+
+    {% if files %}
+    <hr>
+    <h3>Files in Folder: {{ selected_folder }}</h3>
+    <form method="POST">
+        <input type="hidden" name="folder" value="{{ selected_folder }}">
+        {% for file in files %}
+            <input type="radio" name="file_id" value="{{ file.id }}" required> {{ file.name }}<br>
+            <input type="hidden" name="filename" value="{{ file.name }}">
+        {% endfor %}
+        <br>
+        <button type="submit" name="action" value="download">Download Selected File</button>
+    </form>
+    {% endif %}
+
+    <hr>
+    <p><a href="/logout">Logout</a></p>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

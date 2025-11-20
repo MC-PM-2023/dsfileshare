@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <meta charset="UTF-8">
+  <title>{% block title %}DSFileShare - Admin Panel{% endblock %}</title>
+  <link rel="icon" href="https://storage.googleapis.com/my-react-image-bucket-123/DS_Logos/Logo_Favicon/DSFileshare_Favicon.png" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <style>
+    .footer {
+      background: rgba(255, 255, 255, 0.15);   /* lighter transparency */
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+
+      color: #fff;
+      text-align: center;
+      padding: 15px 10px;
+      font-size: 14px;
+      font-weight: 500;
+
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    .footer p {
+      margin: 0px 0;
+      color: #494848;
+    }
+
+    .footer-links a {
+      color: #4dff9c;  /* neon green style */
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    :root{
+      --nav:#2c3e50;
+      --side:#34495e;
+      --brand:#3498db;
+      --brand-hover:#2980b9;
+      --text:#2c3e50;
+      --card:#ffffff;
+      --bg-grad-1:#dce35b;
+      --bg-grad-2:#45b649;
+    }
+
+    /* Page & layout */
+    body{
+      margin:0;
+      font-family:'Segoe UI',sans-serif;
+      background: linear-gradient(to right, var(--bg-grad-1), var(--bg-grad-2));
+      padding-bottom:60px; /* room for fixed footer */
+    }
+
+    .navbar{
+      background-color: var(--nav);
+      color:#fff;
+      height:56px;
+      padding: 6px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      position:sticky;
+      top:0;
+      z-index:1000;
+    }
+
+    /* logo in navbar */
+    .brand {
+      display:flex; align-items:center; gap:10px;
+    }
+    .brand img {
+      height:34px; width:auto; display:block;
+      border-radius:4px;
+      background:#fff; /* looks crisp on dark bar */
+      padding:2px;
+      cursor: pointer; /* clickable */
+    }
+
+    /* RIGHT SIDE (GIF + profile) */
+    .navbar-right{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .nav-gif{
+      height:40px;
+      width:auto;
+      border-radius:6px;
+      object-fit:cover;
+      box-shadow:0 2px 6px rgba(0,0,0,.35);
+      cursor: pointer; /* clickable */
+    }
+
+    .sidebar{
+      width:220px;
+      background: var(--side);
+      position:fixed; top:0; left:0; height:100vh;
+      padding-top:70px;
+    }
+    .sidebar a{
+      display:block; color:#fff; text-decoration:none;
+      padding:14px 22px; font-size:15px;
+    }
+    .sidebar a:hover{ background:#3d5a73; }
+
+    .main{
+      margin-left:240px;
+      padding:30px;
+    }
+
+    h2{ color:var(--text); margin: 8px 0 10px; }
+
+    form{
+      background:#fff; padding:18px; margin-bottom:26px;
+      border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,.1);
+    }
+    label{ font-weight:600; margin-bottom:6px; display:block; }
+    select, input[type="text"], button{
+      width:100%; padding:10px; margin:10px 0 16px;
+      border-radius:8px; border:1px solid #ccc; font-size:15px;
+    }
+    button{
+      background:var(--brand); color:#fff; font-weight:700; border:none; cursor:pointer;
+    }
+    button:hover{ background:var(--brand-hover); }
+
+    .message{
+      background:#ecf9ec; border:1px solid #5cb85c; color:#2a6e2a;
+      padding:10px; margin-bottom:18px; border-radius:8px;
+    }
+
+    /* ---------- Profile dropdown (avatar card) ---------- */
+    .profile-wrap{
+      display:flex;
+      align-items:center;
+    }
+    .profile-username{
+      color:#fff;
+      font-weight:600;
+      font-size:16px;
+    }
+
+    .profile{ position:relative; cursor:pointer; }
+    .profile .avatar{
+      width:34px; height:34px; border-radius:50%;
+      object-fit:cover; border:2px solid #ffffff99;
+      box-shadow:0 2px 6px rgba(0,0,0,.25);
+    }
+    .profile .avatar.lg{
+      width:44px; height:44px; border-radius:50%; border:none;
+    }
+
+    .profile-card{
+      position:absolute; right:0; top:48px;
+      min-width:280px; background:#fff; color:#111;
+      border-radius:14px; box-shadow:0 12px 32px rgba(0,0,0,.22);
+      display:none; overflow:hidden; z-index:1002;
+    }
+    .profile-card.open{ display:block; }
+
+    .profile-card .card-header{
+      display:flex; align-items:center; gap:12px;
+      padding:12px 14px; border-bottom:1px solid #eee; background:#f9fafb;
+    }
+    .profile-card .who .name{ font-weight:700; line-height:1.1 }
+    .profile-card .who .mail{
+      font-size:12px; color:#666; margin-top:2px; overflow:hidden;
+      text-overflow:ellipsis; white-space:nowrap; max-width:180px;
+    }
+
+    .profile-card .card-link{
+      display:block; padding:12px 14px; text-decoration:none; color:#222;
+      border-bottom:1px solid #f0f0f0; font-weight:500;
+    }
+    .profile-card .card-link:last-child{ border-bottom:none; }
+    .profile-card .card-link:hover{ background:#f5f7fb; }
+    .profile-card .card-link.danger{ color:#c0392b; }
+    .profile-card .card-link.danger:hover{ background:#fdecea; }
+
+    /* tables */
+    table{
+      width:100%; border-collapse:collapse; background:#fff;
+      border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,.1);
+      overflow:hidden;
+    }
+    thead{ background:#2c3e50; color:#fff; }
+    th, td{ padding:12px; text-align:center; }
+    td ul{ margin:0; padding-left:18px; text-align:left; }
+  </style>
+</head>
+<body>
+
+ <!-- NAVBAR -->
+<div class="navbar">
+  <!-- LEFT: Datasolve logo -->
+  <div class="brand">
+    <!-- logo → /file -->
+    <a href="/fileshare">
+      <img src="/static/vvvv.jpg" alt="Datasolve Analytics" />
+    </a>
+  </div>
+
+  <!-- RIGHT: Name | Profile | GIF -->
+  <div class="navbar-right">
+
+    <!-- Username -->
+    <span class="profile-username">{{ profile_name }}
+    </span>
+
+    <!-- Avatar + dropdown -->
+    <div class="profile-wrap">
+      <div class="profile" onclick="toggleProfileDropdown(event)">
+        <img
+          class="avatar"
+          src="{{ (profile_image_url or gravatar_url(user_email, 128)) }}"
+          alt="avatar"
+        />
+        <div id="profileCard" class="profile-card">
+
+          <div class="card-header">
+            <img class="avatar lg"
+                 src="{{ (profile_image_url or gravatar_url(user_email, 128)) }}"
+                 alt="avatar"/>
+            <div class="who">
+              <div class="name">{{ profile_name }}</div>
+              <div class="mail">
+                <i class="bi bi-envelope"></i> {{ user_email }}
+              </div>
+            </div>
+          </div>
+
+          {% if session['role'] == 'admin' %}
+          <a class="card-link" href="/admin">
+            <i class="bi bi-speedometer2"></i> Admin Panel
+          </a>
+          {% endif %}
+
+          <a class="card-link" href="/fileshare">
+            <i class="bi bi-folder2-open"></i> User Panel
+          </a>
+
+          <a class="card-link danger" href="/logout">
+           <i class="bi bi-box-arrow-right"></i> Logout
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- GIF → /file -->
+    <a href="/fileshare">
+      <img 
+        src="https://storage.googleapis.com/my-react-image-bucket-123/DS_Logos/Logo_Gif/DS_Fileshare.gif" 
+        class="nav-gif" 
+        alt="Animated GIF"
+      />
+    </a>
+
+  </div>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+<div class="sidebar">
+    <a href="#grant">
+        <i class="bi bi-person-check" style="margin-right:10px;"></i>
+        Grant Access
+    </a>
+
+    <a href="#remove">
+        <i class="bi bi-person-dash" style="margin-right:10px;"></i>
+        Remove Access
+    </a>
+
+    <a href="#promote">
+        <i class="bi bi-person-up" style="margin-right:10px;"></i>
+        Promote Admin
+    </a>
+
+    <a href="#create">
+        <i class="bi bi-folder-plus" style="margin-right:10px;"></i>
+        Create Folder
+    </a>
+
+    <a href="/log">
+        <i class="bi bi-file-earmark-text" style="margin-right:10px;"></i>
+        View Log File
+    </a>
+</div>
+
+
+
+  <!-- MAIN -->
+  <div class="main">
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="message">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+   <h2 id="grant"><i class="bi bi-person-check-fill"></i> Grant Multiple Folder Access</h2>
+    <form method="POST">
+      <label>Select User:</label>
+      <select name="username" id="userSelect" required onchange="updateFolderOptions()">
+        <option value="" disabled selected>-- Select User Name --</option>
+        {% for user in users %}
+          <option value="{{ user.username }}">{{ user.username }}</option>
+        {% endfor %}
+      </select>
+
+      <label>Select Folders (Hold Ctrl/Cmd for multiple):</label>
+      <select name="folders" id="folderSelect" multiple size="5" required>
+        {% for folder in folders %}
+          <option value="{{ folder }}">{{ folder }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit" name="action" value="grant">Grant Access</button>
+    </form>
+
+    <h2 id="remove"><i class="bi bi-person-dash-fill"></i> Remove Folder Access</h2>
+    <form method="POST">
+      <label>Select User:</label>
+      <select name="username" required>
+        <option value="" disabled selected>-- Select User Name --</option>
+        {% for user in users %}
+          <option value="{{ user.username }}">{{ user.username }}</option>
+        {% endfor %}
+      </select>
+
+      <label>Select Folder:</label>
+      <select name="folder" required>
+        <option value="" disabled selected>-- Select Folder --</option>
+        {% for folder in folders %}
+          <option value="{{ folder }}">{{ folder }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit" name="action" value="remove">Remove Access</button>
+    </form>
+
+    <h2 id="promote"><i class="bi bi-person-up"></i> Promote User to Admin</h2>
+
+    <form method="POST">
+      <label>Select User:</label>
+      <select name="username" required>
+        <option value="" disabled selected>-- Select User to Admin --</option>
+        {% for user in users %}
+          <option value="{{ user.username }}">{{ user.username }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit" name="action" value="make_admin">Promote to Admin</button>
+    </form>
+
+    <h2 id="create"><i class="bi bi-folder-plus"></i> Create New Folder in Google Drive</h2>
+    <form method="POST">
+      <label>Folder Name:</label>
+      <input type="text" name="folder_name" required>
+      <button type="submit" name="action" value="create_folder">Create Folder</button>
+    </form>
+
+    <h2><i class="bi bi-search"></i> Check Folder Access for a User</h2>
+    <form method="POST">
+      <label>Enter Username:</label>
+      <input type="text" name="check_user" placeholder="e.g., Vasantha kumar" required>
+      <button type="submit" name="action" value="check_access">Check Access</button>
+    </form>
+
+    {% if folder_access_user %}
+    <div style="background:#fefefe; padding:15px; border:1px solid #ccc; border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,.05); margin-bottom:26px;">
+      <h3>Folder Access for <strong>{{ folder_access_user }}</strong>:</h3>
+      {% if folder_access_list %}
+        <ul>
+          {% for folder in folder_access_list %}
+            <li>{{ folder }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <em>No folder access assigned.</em>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <h2><i class="bi bi-people-fill"></i> User Folder Access Overview</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:70px;">Photo</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Folder Access</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>
+            {% if user.image_url %}
+              <img src="{{ user.image_url }}"
+                   alt="photo"
+                   style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid #eaeaea;">
+            {% else %}
+              <img src="{{ gravatar_url(user.email, 92) }}"
+                   alt="photo"
+                   style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid #eaeaea;">
+            {% endif %}
+          </td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>
+            {% if user.folders %}
+              <ul>
+                {% for folder in user.folders %}
+                  <li>{{ folder }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <em>No Access</em>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div> <!-- /main -->
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>&copy; DataSolve Analytics Pvt. Ltd. 2020.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // avatar dropdown
+    function toggleProfileDropdown(e){
+      e.stopPropagation();
+      const card = document.getElementById('profileCard');
+      card.classList.toggle('open');
+    }
+    window.addEventListener('click', () => {
+      const card = document.getElementById('profileCard');
+      if(card) card.classList.remove('open');
+    });
+    window.addEventListener('keydown', (ev) => {
+      if(ev.key === 'Escape'){
+        const card = document.getElementById('profileCard');
+        if(card) card.classList.remove('open');
+      }
+    });
+  </script>
+
+  <!-- Injected by backend for disabling already-assigned folders -->
+  <script>
+    let userFolderMap = {};
+  </script>
+  <script type="application/json" id="user-folder-data">
+    {{ user_folder_map | default({}) | tojson | safe }}
+  </script>
+  <script>
+    userFolderMap = JSON.parse(document.getElementById("user-folder-data").textContent);
+
+    function updateFolderOptions() {
+      const selectedUser = document.getElementById("userSelect").value;
+      const folderSelect  = document.getElementById("folderSelect");
+      const assignedFolders = userFolderMap[selectedUser] || [];
+
+      for (let option of folderSelect.options) {
+        if (assignedFolders.includes(option.value)) {
+          option.disabled = true;
+          option.style.color = "#999";
+          option.style.fontStyle = "italic";
+          option.title = "Already Assigned";
+        } else {
+          option.disabled = false;
+          option.style.color = "";
+          option.style.fontStyle = "";
+          option.title = "";
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>

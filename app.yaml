@@ -1,0 +1,71 @@
+# runtime: python311
+# service: fileshare  # only lowercase, numbers and hyphen allowed
+
+# entrypoint: gunicorn -b :$PORT app:app
+
+# env_variables:
+#   # ---- Cloud SQL (MySQL) env vars ----
+#   DB_USER: "appsadmin"
+#   DB_PASS: "appsadmin2025"
+#   DB_NAME: "mc"
+#   # This is the Unix socket path. VERY IMPORTANT.
+#   INSTANCE_UNIX_SOCKET: "/cloudsql/theta-messenger-459613-p7:asia-south1:appsadmin"
+
+#   # Optional: if you want to override in code, but you already hard-coded:
+#   SMTP_SERVER: "smtp.datasolve-analytics.com"
+#   SMTP_PORT: "587"
+#   WEBMAIL_USER: "apps.admin@datasolve-analytics.com"
+#   WEBMAIL_PASSWORD: "datasolve@2025"
+
+#   # Service account JSON (you are loading service.json in your code)
+#   GOOGLE_APPLICATION_CREDENTIALS: "service.json"
+
+# automatic_scaling:
+#   target_cpu_utilization: 0.65
+#   min_instances: 0
+#   max_instances: 1
+
+# handlers:
+#   - url: /static
+#     static_dir: static
+
+#   - url: /.*
+#     script: auto
+runtime: python311
+env: standard
+service: dsfileshare  # only lowercase, numbers and hyphen allowed
+instance_class: F1   # smallest instance class (cheaper)
+
+entrypoint: gunicorn -b :$PORT app:app
+
+env_variables:
+  # ---- Cloud SQL (MySQL) env vars ----
+  DB_USER: "appsadmin"
+  DB_PASS: "appsadmin2025"
+  DB_NAME: "mc"
+  # This is the Unix socket path. VERY IMPORTANT.
+  INSTANCE_UNIX_SOCKET: "/cloudsql/theta-messenger-459613-p7:asia-south1:appsadmin"
+
+  # Optional: SMTP config
+  SMTP_SERVER: "smtp.datasolve-analytics.com"
+  SMTP_PORT: "587"
+  WEBMAIL_USER: "apps.admin@datasolve-analytics.com"
+  WEBMAIL_PASSWORD: "datasolve@2025"
+
+  # Service account JSON (you are loading service.json in your code)
+  GOOGLE_APPLICATION_CREDENTIALS: "service.json"
+
+automatic_scaling:
+  min_instances: 0          # fully scale to 0 when idle
+  max_instances: 1          # never more than one instance
+  min_idle_instances: 0     # don't keep idle instances
+  max_idle_instances: 0
+  target_cpu_utilization: 0.9   # squeeze more work into one instance
+  max_pending_latency: 4000ms   # allow up to 4s wait under load (cheap but slower)
+
+handlers:
+  - url: /static
+    static_dir: static
+
+  - url: /.*
+    script: auto
