@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "theta-messenger-459613-p7",
+  "private_key_id": "606469f607fc5bdfacf899d94465cd0f0b58d6ec",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCCfiiVazKc672I\ntnc/xxkaqJizYZ+Qshbmn78je12PxIwq1G7esZsa2BcTi/8oAg5IoSeFF/YIm3q6\nCRgcQT+qE2T4sNnC49LfgbJF71796PXv3AUcrXivBUdTcPLnQjgiwRBGygt4YBRx\nDbRcveIZcP5lv7za7Lzh8wPnyXizk527sgISVDQYivQazdsw1zFs6G4KYlUb+i3k\nauRRXL0iB5N2NIkJ6FAZWuJDoeaV+rzqj8sCG0+0QUHfyNYVH3EPrVaUG70hGguV\ndKInV/piRNz41/qHrNb5YNwzZGmTYz6DJch51cCP9/xVquhDLHbKLuWvvzDcIthB\nOCWfDDPrAgMBAAECggEAMLJ14LTdcXQECiXVwKZDNxCd06tlybC8HRqWUN5z3vgB\nOuaF7XMoJ89mZTQEZ2DFBdOmFOQJO9MR7KUCK2EqKgUM1EXjLfipNCGJbtHSiDzM\nstNP0RDnjaERqhDnhOfQXR/hPBmgSC7K0hnEKivuWYIyXbQ8/RIFtuhil7g25AR1\nGM/JbbqJ/I2aLrRkGUQ5kM9DQzg7h1O2eRx2aPyumL3ylxX8jqks9AmORelnI7z4\n/9B43sD0Dv0oSyU6PjlcIQDXD0wN0aevWU7dEo72K9PlwVhq1+Vi47KQiZlHC3Fk\ngLaCtp//Gt+BmQ6cI8+ese+J2LJILrdE2E7SxTgqkQKBgQC3ZZVdOw1vqAUlKStp\nsgAz9uPu615gKd7iaSriGi7TaSoY+cBC3UsiUVHi5Bb1k79E5H1Yw7PMdeXDv8dr\nU5P7jmsz8fqLj4v1z6NHRXJ+KEOH9waS0Cnx+Al6fi7OuGJ8t8sJYqQ01bK1PdT3\ntl3kCrAIE3r1lZxYd4ysRV+jEwKBgQC2Jv/jOI9x9LK/WtNOlybuVde8x34lFEet\nss0KUAR0xsVDlaSgZWRFmlRRPnLIQgI5xCIeg1gbUFk34swnsoyYo9fBQ7vhASG3\nbjmLBHA2PnwI4s/X8cqGXnmeL7383T0HUUCwUdsJNiqPYpy+dZfFd40PydcMQZR/\npUntjvFuyQKBgAP6skj5lQsNLD9oK0b508NM4hk3Bi8z+WAURBfv1YBE0eME2EUb\nJBw0g4BWzqC5efb2tjmM1YPkMv4SVTNg9t8Icg8IexU4IiNNRA+x1BAks4Jpu7zH\nw4E6jooX3tAhdBGcs00a1NFIqb4A/3P4gwUFrlgehBZ8Do5k2aqLPs39AoGBAKH+\nVRwStR+3azBa6gm+y1Sy60ZsdHctbgHAPjGpsAzaqZzNfLdY9LAh7FLEovgOHESb\ndWyFitnfvzjAbqfvVrJ5I+ww/OnCQ+YKFQrZS6IyN8T/UbDOzDpr0uUnuGMlrpzP\nWiR058NtdLRIEvYfRnbLN5yO+L1hpVtP+EtZEMZhAoGAe+P2dL7Xu/dNzgyOfXqm\n6tRloRs+zPDwTcl3s9U9yfabXiNUQbEkWdQrSSW/NVyDBr9oGRbdHocL7elLkWSz\nIbiMvR8IQHronSGau5yIaskFyV1BV3NtaWScg6vxh9H/Cd0CeEFQcre2xx5+/nzM\nj2dDAjE0udfmXtG291MFTlI=\n-----END PRIVATE KEY-----\n",
+  "client_email": "dsfile@theta-messenger-459613-p7.iam.gserviceaccount.com",
+  "client_id": "101266807702492649261",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dsfile%40theta-messenger-459613-p7.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
